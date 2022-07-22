@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\NewTaskEmail;
 use App\Models\Task;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 
 class TaskController extends Controller
 {
@@ -20,6 +23,13 @@ class TaskController extends Controller
      */
     public function index()
     {
+
+        $user = Auth::user()->id;
+        $tasks = Task::where('user_id', $user)->get();
+       
+
+        return view('task.index', ['tasks' => $tasks]);
+
         // if (Auth::check()) {
         //     $id = Auth::user()->id;
         //     $email = Auth::user()->email;
@@ -62,7 +72,13 @@ class TaskController extends Controller
         ];
 
         $request->validate($rules, $feedback);
-        $task = Task::create($request->all());
+
+        $userId = $request->all();
+        $userId['user_id'] = Auth::user()->id;
+        $task = Task::create($userId);
+        //send email to confirm new task
+        $toDestination = Auth::user()->email;
+        Mail::to($toDestination)->send(new NewTaskEmail($task));
         return redirect()->route('task.show', ['task' => $task->id]);
     }
 
@@ -74,7 +90,6 @@ class TaskController extends Controller
      */
     public function show(Task $task)
     {
-        $task = $task->getAttributes();
         return view('task.show', ['task' => $task]);
     }
 
