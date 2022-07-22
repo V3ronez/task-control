@@ -13,7 +13,7 @@
             <tr>
                 <th scope="row-auto">{{ $task->id }}</th>
                 <td>{{ $task->task }}</td>
-                <td>{{ $task->date_to_conclusion }}</td>
+                <td>{{ date('d/m/Y', strtotime($task->date_to_conclusion) )}}</td>
             </tr>
         </tbody>
     </table>
