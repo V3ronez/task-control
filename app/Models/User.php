@@ -13,6 +13,7 @@ class User extends Authenticatable implements MustVerifyEmail
 {
     use HasFactory, Notifiable;
 
+
     /**
      * The attributes that are mass assignable.
      *
@@ -53,7 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
         $this->notify(new VerifyEmailNotification($this->name));
     }
 
-    // public function tasks() {
-    //     return $this->hasOne('App\models\User', 'user_id');
-    // }
+    public function tasks() {
+        return $this->hasMany('\App\Models\Task');
+    }
 }

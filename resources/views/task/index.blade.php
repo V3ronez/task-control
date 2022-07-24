@@ -8,6 +8,7 @@
                 <th scope="col">Task</th>
                 <th scope="col">Date to conclusion</th>
                 <th scope="col"></th>
+                <th scope="col"><a style="text-decoration: none" class="btn btn-light" href="{{ route('task.export') }}">Export</a></th>
             </tr>
         </thead>
         <tbody>
@@ -16,7 +17,17 @@
                     <th scope="row-auto">{{ $task->id }}</th>
                     <td>{{ $task->task }}</td>
                     <td>{{ date('d/m/Y', strtotime($task->date_to_conclusion)) }}</td>
-                    <td><a style="text-decoration: none" class="btn btn-light" href="{{route('task.edit', ['task'=> $task->id])}}">Edit task</a></td>
+                    <td><a style="text-decoration: none" class="btn btn-light"
+                            href="{{ route('task.edit', ['task' => $task->id]) }}">Edit task</a></td>
+                    <td>
+                        <form id="form_{{ $task->id }}" action="{{ route('task.destroy', ['task' => $task->id]) }}"
+                            method="post">
+                            @method('DELETE')
+                            @csrf
+                        </form>
+                        <a style="text-decoration: none" class="btn btn-light"
+                            onclick="document.getElementById('form_{{ $task->id }}').submit()" href="#">Delete</a>
+                    </td>
                 </tr>
             @endforeach
         </tbody>

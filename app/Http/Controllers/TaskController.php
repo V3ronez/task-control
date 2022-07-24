@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\TasksExport;
 use App\Models\Task;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Maatwebsite\Excel\Facades\Excel;
 
 class TaskController extends Controller
 {
 
     public function __construct()
     {
-        // $this->middleware('auth');
+        $this->middleware('auth');
     }
 
     /**
@@ -145,6 +147,17 @@ class TaskController extends Controller
      */
     public function destroy(Task $task)
     {
-        //
+        if ($task->user_id !== Auth::user()->id) {
+            return view('access-denied');
+        }
+
+        $task->delete();
+        return redirect()->route('task.index');
+
+    }
+    
+    public function exportXLSX()
+    {
+        return Excel::download(new TasksExport, 'tasks.xlsx');
     }
 }
