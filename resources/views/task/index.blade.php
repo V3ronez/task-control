@@ -8,7 +8,10 @@
                 <th scope="col">Task</th>
                 <th scope="col">Date to conclusion</th>
                 <th scope="col"></th>
-                <th scope="col"><a style="text-decoration: none" class="btn btn-light" href="{{ route('task.export') }}">Export</a></th>
+                <th scope="col"><a style="text-decoration: none" class="btn btn-light"
+                        href="{{ route('task.export', ['extension' => 'xlsx']) }}">Export(XLSX)</a></th>
+                <th scope="col"><a style="text-decoration: none" class="btn btn-light"
+                        href="{{ route('task.export', ['extension' => 'csv']) }}">Export(CSV)</a></th>
             </tr>
         </thead>
         <tbody>
@@ -28,6 +31,7 @@
                         <a style="text-decoration: none" class="btn btn-light"
                             onclick="document.getElementById('form_{{ $task->id }}').submit()" href="#">Delete</a>
                     </td>
+                    <td></td>
                 </tr>
             @endforeach
         </tbody>

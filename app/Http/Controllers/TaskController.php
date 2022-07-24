@@ -155,9 +155,14 @@ class TaskController extends Controller
         return redirect()->route('task.index');
 
     }
-    
-    public function exportXLSX()
+
+    public function export($extension)
     {
-        return Excel::download(new TasksExport, 'tasks.xlsx');
+        if (in_array($extension, ['xlsx', 'csv'])) {
+            $fileName = sprintf('tasks.%s', $extension);
+            return Excel::download(new TasksExport, $fileName);
+        }
+        return redirect()->route('task.index');
+
     }
 }

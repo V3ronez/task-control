@@ -27,7 +27,7 @@ Route::get('home', [HomeController::class, 'index'])
     ->middleware('verified')
     ->name('home');
 
-Route::get('task/export', [TaskController::class, 'exportXLSX'])->name('task.export');
+Route::get('task/export/{extension}', [TaskController::class, 'export'])->name('task.export');
 Route::resource('task', TaskController::class)->Middleware('verified');
 
 Route::get('msgtest', function () {
